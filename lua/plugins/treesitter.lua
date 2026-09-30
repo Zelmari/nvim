@@ -3,6 +3,14 @@ return {
   lazy = false,
   build = ":TSUpdate",
   config = function()
+    -- nvim-treesitter `main` only prepends the install dir to 'runtimepath'
+    -- when setup() is given install_dir (see nvim-treesitter/config.lua).
+    -- Without this call the parsers land in stdpath("data")/site/parser but
+    -- stay invisible, so only Neovim's built-in parsers ever load.
+    require("nvim-treesitter").setup({
+      install_dir = vim.fn.stdpath("data") .. "/site",
+    })
+
     -- nvim-treesitter `main` ignores the old `ensure_install` option; the
     -- current API is install(). Non-blocking by default, so this doesn't
     -- stall startup on a fresh clone. Remove entries you don't need to
