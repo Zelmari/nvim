@@ -14,10 +14,10 @@ opt.smartindent = true
 -- Clipboard (kept separate from OS clipboard unless "+ register is used explicitly)
 opt.clipboard = ""
 
--- Line wrapping, sign column, and 80-column ruler
+-- Line wrapping, sign column, and column ruler
 opt.wrap = false
 opt.signcolumn = "yes"
-opt.colorcolumn = "80"
+opt.colorcolumn = ""
 
 -- Persistent undo (cross-platform XDG state path), no swap/backup files
 opt.undofile = true
