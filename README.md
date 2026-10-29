@@ -15,7 +15,7 @@ A clean, OS-agnostic **Neovim 0.12+** configuration built for **C/C++, Python, a
 * **Implicit OS clipboard syncing** — Standard yanks/deletes (`y`, `d`, `c`) stay inside Neovim registers and do not overwrite your system clipboard unless you explicitly use `"+`.
 * **Persistent IDE sidebars & tab bars** — No file-tree drawer (`nvim-tree`/`neo-tree`), no buffer tabline, and no multi-split `nvim-dap-ui`.
 * **Frontend / other language stacks out of the box** — Web/Rust/Go toolchains are not pre-installed (though easy to add in `lua/plugins/lsp.lua`).
-* **Neovim `< 0.12` or `musl`-only prebuilt binaries** — Relies on Neovim `0.12+` APIs (`vim.lsp.config`, `winborder`, `vim.snippet`, `nvim-treesitter` `main` branch) and `glibc`/macOS Mason binaries.
+* **Neovim `< 0.12` or `musl`-only prebuilt binaries** — Relies on Neovim `0.12+` APIs (`vim.lsp.config`, `winborder`, `vim.snippet`, `nvim-treesitter` `main` branch) and macOS/Linux (`glibc`)/Windows Mason binaries.
 
 ---
 
@@ -27,16 +27,23 @@ Requires **Neovim `0.12+`**, a **Nerd Font** in your terminal, and:
   ```sh
   brew install git llvm node python openjdk@21 fzf ripgrep fd tree-sitter
   ```
-* **Void Linux (`glibc`, `xbps`):**
+* **Linux (`glibc` — e.g. Void `xbps`, Ubuntu/Debian `apt`, Arch `pacman`):**
   ```sh
+  # Void Linux
   sudo xbps-install -S git gcc clang nodejs python3 openjdk21 fzf ripgrep fd tree-sitter curl unzip tar make
+
+  # Ubuntu / Debian
+  sudo apt install git build-essential clang nodejs npm python3 python3-venv openjdk-21-jdk fzf ripgrep fd-find tree-sitter-cli curl unzip tar
+
+  # Arch Linux
+  sudo pacman -S git base-devel clang nodejs npm python jdk21-openjdk fzf ripgrep fd tree-sitter-cli curl unzip tar
   ```
-* **Windows (`winget` / `scoop`):**
+* **Windows (`winget` — native PowerShell or WSL2):**
   ```powershell
   winget install Git.Git LLVM.LLVM OpenJS.NodeJS.LTS Python.Python.3.12 Microsoft.OpenJDK.21 junegunn.fzf BurntSushi.ripgrep.MSVC sharkdp.fd Treesitter.TreesitterCLI
   ```
 
-On first launch (`nvim`), `lazy.nvim`, `nvim-treesitter`, and `mason-tool-installer` automatically install all plugins, parsers, language servers, formatters, linters, and debuggers. Run `:Copilot auth` once to sign in to GitHub Copilot.
+Clone into `~/.config/nvim` (macOS / Linux / WSL2) or `%LOCALAPPDATA%\nvim` (native Windows). On first launch (`nvim`), `lazy.nvim`, `nvim-treesitter`, and `mason-tool-installer` automatically install all plugins, parsers, language servers, formatters, linters, and debuggers. Run `:Copilot auth` once to sign in to GitHub Copilot.
 
 ---
 
@@ -122,7 +129,7 @@ On first launch (`nvim`), `lazy.nvim`, `nvim-treesitter`, and `mason-tool-instal
 ## Directory Layout
 
 ```text
-~/.config/nvim/
+~/.config/nvim/ (or %LOCALAPPDATA%\nvim\ on Windows)
 ├── init.lua
 ├── lazy-lock.json
 └── lua/
