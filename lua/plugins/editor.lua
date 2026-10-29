@@ -79,6 +79,10 @@ return {
       vim.g.undotree_SetFocusWhenToggle = 1
       vim.g.undotree_WindowLayout = 2
       vim.g.undotree_ShortIndicators = 1
+      if vim.fn.has("win32") == 1 and vim.fn.executable("diff") == 0 then
+        local git_diff = "C:/Program Files/Git/usr/bin/diff.exe"
+        vim.g.undotree_DiffCommand = vim.fn.executable(git_diff) == 1 and ('"' .. git_diff .. '"') or "FC"
+      end
     end,
   },
 

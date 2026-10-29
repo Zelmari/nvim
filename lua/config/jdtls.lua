@@ -42,7 +42,7 @@ function M.setup()
   end
 
   local mason_path = vim.fn.stdpath("data") .. "/mason"
-  local jdtls_bin = mason_path .. "/bin/jdtls"
+  local jdtls_bin = mason_path .. "/bin/" .. (vim.fn.has("win32") == 1 and "jdtls.cmd" or "jdtls")
   if vim.fn.executable(jdtls_bin) == 0 then
     jdtls_bin = vim.fn.exepath("jdtls")
   end

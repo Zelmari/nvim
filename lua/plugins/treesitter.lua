@@ -36,11 +36,17 @@ return {
         "gitignore",
       }
 
-      if vim.fn.executable("tree-sitter") == 1 and vim.fn.executable("cc") == 1 then
+      local has_compiler = vim.fn.executable("cc") == 1
+        or vim.fn.executable("gcc") == 1
+        or vim.fn.executable("clang") == 1
+        or vim.fn.executable("cl") == 1
+        or vim.fn.executable("zig") == 1
+
+      if vim.fn.executable("tree-sitter") == 1 and has_compiler then
         ts.install(parsers)
       else
         vim.notify(
-          "nvim-treesitter: install 'tree-sitter' CLI and a C compiler ('cc') to build missing parsers.",
+          "nvim-treesitter: install 'tree-sitter' CLI and a C compiler (cc/gcc/clang/cl) to build missing parsers.",
           vim.log.levels.WARN
         )
       end

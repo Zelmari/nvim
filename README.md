@@ -1,12 +1,12 @@
 # Neovim Configuration
 
-A clean, OS-agnostic **Neovim 0.12+** configuration built for **C/C++, Python, and Java** across **macOS** and **Void Linux (`glibc`)**.
+A clean, OS-agnostic **Neovim 0.12+** configuration built for **C/C++, Python, and Java** across **macOS**, **Linux (`glibc`)**, and **Windows**.
 
 ---
 
 ## Use Cases
 * **C/C++, Python, and Java development** — Pre-wired LSP (`clangd`, `neocmake`, `basedpyright`, `jdtls` + Lombok, `lua_ls`), manual formatting (`clang-format`, `ruff`, `google-java-format`, `stylua`), linting (`clang-tidy`, `ruff`), docstrings (`neogen` for Doxygen, Google Python, and Javadoc), and step-through debugging (`codelldb`, `debugpy`, `java-debug-adapter`).
-* **Cross-OS portability (macOS & Void Linux `glibc`)** — Zero hardcoded OS paths; tools and parsers install automatically via `lazy.nvim`, `mason.nvim`, and `nvim-treesitter`.
+* **Cross-OS portability (macOS, Linux `glibc`, & Windows)** — Zero hardcoded OS paths; tools and parsers install automatically via `lazy.nvim`, `mason.nvim`, and `nvim-treesitter`.
 * **Keyboard-only, minimal-chrome workflow** — Transparent `rose-pine` theme, upright (non-italic) text, buffer-based file editing (`oil.nvim`), fast fuzzy search (`fzf-lua`), single-pane debugging (`nvim-dap-view`), and a centered floating terminal (`toggleterm.nvim`).
 
 ## Non-Use Cases
@@ -30,6 +30,10 @@ Requires **Neovim `0.12+`**, a **Nerd Font** in your terminal, and:
 * **Void Linux (`glibc`, `xbps`):**
   ```sh
   sudo xbps-install -S git gcc clang nodejs python3 openjdk21 fzf ripgrep fd tree-sitter curl unzip tar make
+  ```
+* **Windows (`winget` / `scoop`):**
+  ```powershell
+  winget install Git.Git LLVM.LLVM OpenJS.NodeJS.LTS Python.Python.3.12 Microsoft.OpenJDK.21 junegunn.fzf BurntSushi.ripgrep.MSVC sharkdp.fd Treesitter.TreesitterCLI
   ```
 
 On first launch (`nvim`), `lazy.nvim`, `nvim-treesitter`, and `mason-tool-installer` automatically install all plugins, parsers, language servers, formatters, linters, and debuggers. Run `:Copilot auth` once to sign in to GitHub Copilot.

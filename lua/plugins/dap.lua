@@ -1,19 +1,29 @@
----Find active Python interpreter for target program debugging across macOS and Void Linux
+local is_win = vim.fn.has("win32") == 1
+
+---Find active Python interpreter for target program debugging across macOS, Linux, and Windows
 local function resolve_target_python()
+  local subpaths = is_win and { "/Scripts/python.exe", "/bin/python" } or { "/bin/python" }
   if vim.env.VIRTUAL_ENV then
-    local venv_py = vim.env.VIRTUAL_ENV .. "/bin/python"
-    if vim.fn.executable(venv_py) == 1 then
-      return venv_py
+    for _, sub in ipairs(subpaths) do
+      local venv_py = vim.env.VIRTUAL_ENV .. sub
+      if vim.fn.executable(venv_py) == 1 then
+        return venv_py
+      end
     end
   end
   local cwd = vim.fn.getcwd()
   for _, dir in ipairs({ ".venv", "venv" }) do
-    local candidate = cwd .. "/" .. dir .. "/bin/python"
-    if vim.fn.executable(candidate) == 1 then
-      return candidate
+    for _, sub in ipairs(subpaths) do
+      local candidate = cwd .. "/" .. dir .. sub
+      if vim.fn.executable(candidate) == 1 then
+        return candidate
+      end
     end
   end
-  return vim.fn.exepath("python3") ~= "" and vim.fn.exepath("python3") or "python"
+  if vim.fn.executable("python3") == 1 then
+    return vim.fn.exepath("python3")
+  end
+  return vim.fn.exepath("python") ~= "" and vim.fn.exepath("python") or "python"
 end
 
 return {

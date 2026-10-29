@@ -1,34 +1,48 @@
+local is_win = vim.fn.has("win32") == 1
+
 ---Resolve active Python interpreter from $VIRTUAL_ENV or project .venv/venv (OS-agnostic)
 local function find_python_path(workspace)
+  local subpaths = is_win and { "/Scripts/python.exe", "/bin/python" } or { "/bin/python" }
   if vim.env.VIRTUAL_ENV then
-    local venv_py = vim.env.VIRTUAL_ENV .. "/bin/python"
-    if vim.fn.executable(venv_py) == 1 then
-      return venv_py
+    for _, sub in ipairs(subpaths) do
+      local venv_py = vim.env.VIRTUAL_ENV .. sub
+      if vim.fn.executable(venv_py) == 1 then
+        return venv_py
+      end
     end
   end
   if workspace then
     for _, dir in ipairs({ ".venv", "venv" }) do
-      local candidate = workspace .. "/" .. dir .. "/bin/python"
-      if vim.fn.executable(candidate) == 1 then
-        return candidate
+      for _, sub in ipairs(subpaths) do
+        local candidate = workspace .. "/" .. dir .. sub
+        if vim.fn.executable(candidate) == 1 then
+          return candidate
+        end
       end
     end
   end
-  return vim.fn.exepath("python3") ~= "" and vim.fn.exepath("python3") or "python"
+  if vim.fn.executable("python3") == 1 then
+    return vim.fn.exepath("python3")
+  end
+  return vim.fn.exepath("python") ~= "" and vim.fn.exepath("python") or "python"
 end
 
----Check whether python3 on PATH is >= 3.10 (required by Mason's pip-based basedpyright & debugpy)
+---Check whether Python >= 3.10 is on PATH (required by Mason's pip-based basedpyright & debugpy)
 local function has_python_310()
-  if vim.fn.executable("python3") == 0 then
-    return false
+  for _, cmd in ipairs({ "python3", "python" }) do
+    if vim.fn.executable(cmd) == 1 then
+      local out = vim.fn.system({
+        cmd,
+        "-c",
+        "import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)",
+      })
+      local _ = out
+      if vim.v.shell_error == 0 then
+        return true
+      end
+    end
   end
-  local out = vim.fn.system({
-    "python3",
-    "-c",
-    "import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)",
-  })
-  local _ = out
-  return vim.v.shell_error == 0
+  return false
 end
 
 local py310_available = has_python_310()

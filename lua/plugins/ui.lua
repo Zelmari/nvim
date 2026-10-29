@@ -90,7 +90,9 @@ return {
       open_mapping = [[<C-\>]],
       direction = "float",
       shade_terminals = false, -- Keep terminal background genuinely transparent
-      shell = vim.o.shell,
+      shell = vim.fn.has("win32") == 1
+          and (vim.fn.executable("pwsh") == 1 and "pwsh -NoLogo" or "powershell -NoLogo")
+        or vim.o.shell,
       float_opts = {
         border = "curved", -- Rounded border in toggleterm
         width = function()
